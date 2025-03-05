@@ -376,4 +376,4 @@ The function `train_from_scratch` uses apptainer to execute the docker image of 
 Finally, once the ensemble of models are trained, the `train_freeze_and_compress_model` function handles compressing the outputs into `graph-compress-?-.pb` form. 
 
 ### Back to training.sh (again)
-`wait_jobs_done` was described in detail in [[4 - Journal/PABA MLP/Documentation/labeling|labeling]], and `wrap_up` requires no further explanation. Thus, an ensemble of models can be trained for any arbitrary iteration of active learning. 
+`wait_jobs_done` was described in detail in labeling.md, and `wrap_up` requires no further explanation. Thus, an ensemble of models can be trained for any arbitrary iteration of active learning. 
