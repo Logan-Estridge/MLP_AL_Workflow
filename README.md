@@ -28,4 +28,4 @@ GromacsVersion=gromacs-2022.5_plumed-2.8.2
 source /cm/shared/apps/VALSSON/gromacs/${GromacsVersion}/load-gromacs-plumed.sh
 ```
 ## Generate Initial Dataset
-Use GROMACS to perform a classical MD simulation of the polymorph/system of interest. Extract an appropriate number of structures (100-1,000) from the production NPT trajectory in the `*.gro` format. **It is important in this step set the name of the `*.gro` structures to include a 5 digit string corresponding to the timestep of the extracted frame.** 
+Use GROMACS to perform a classical MD simulation of the polymorph/system of interest. Extract an appropriate number of structures (100-1,000) from the production NPT trajectory in the `*.gro` format. **It is important in this step to set the name of the `*.gro` structures to include a 5 digit string corresponding to the timestep of the extracted frame.** 
