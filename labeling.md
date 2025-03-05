@@ -1,4 +1,4 @@
-# Full Script:
+# Full Script: labeling.sh
 ```bash
 #!/bin/bash
 
