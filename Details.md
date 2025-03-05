@@ -58,9 +58,9 @@ Once all the labeling for the given iteration is finished, the `for` loop will m
 Likewise, this script (`training.sh`) will not complete until all the training is done for a given iteration. Finally, the `for` loop moves into the exploration directory and executes `exploration.sh`. As you can guess, this script is designed with exactly the same principles as the last two. Once `exploration.sh` is completed, the structures between the values of `lower_limit` and `upper_limit` defined in `set_plan` are extracted and sent to the next iteration's labeling directory for labeling. Thus the cycle may be repeated as many times as needed. 
 
 For detailed explanations of `labeling.sh`, `training.sh`, and `exploration.sh` see the following:
-- [[labeling.sh]]
-- [[training.sh]]
-- [[exploration.sh]]
+- [[labeling.md]]
+- [[training.md]]
+- [[exploration.md]]
 
 The last part of the `active_learning.sh` script simply executes the above three described functions in order, and finally this function is executed:
 ```bash
