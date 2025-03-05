@@ -158,7 +158,7 @@ define_systems() {
   export training_systems_json=$(jq -R -s -c 'split("\n") | map(select(length > 0))' <<<"${training_systems}")
 }
 ```
-The variables `validation_systems_json` and `training_systems_json` will be utilized in the next function, which runs the script `create_training_json.sh`:
+The variables `validation_systems_json` and `training_systems_json` will be utilized in the next function, which runs the script `create_training_json.sh` for an ensemble of 4 models:
 ```bash
 ensemble_submit() {
   slurm_ids=()
