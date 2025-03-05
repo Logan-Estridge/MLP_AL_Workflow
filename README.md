@@ -29,3 +29,11 @@ source /cm/shared/apps/VALSSON/gromacs/${GromacsVersion}/load-gromacs-plumed.sh
 ```
 ## Generate Initial Dataset
 Use GROMACS to perform a classical MD simulation of the polymorph/system of interest. Extract an appropriate number of structures (100-1,000) from the production NPT trajectory in the `*.gro` format. **It is important in this step to set the name of the `*.gro` structures to include a 5 digit string corresponding to the timestep of the extracted frame.** 
+
+## Reading Order
+1. README
+2. Quick Start
+3. Details
+4. labeling
+5. training
+6. exploration
