@@ -1,7 +1,6 @@
 # MLP_AL_Workflow
 The "automatic" active learning workflow I have developed in bash/python to train a machine learning potential for the polymorphs of p-aminobenzoic acid. 
 
-# Prologue
 ## Basic Structure / Terminology
 There are three main directories in the workflow, corresponding to the three main processes involved in active learning to train a machine learning potential (MLP). These processes are performed iteratively in the following order to train an accurate MLP:
 - labeling
