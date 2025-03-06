@@ -1,3 +1,14 @@
+# Directory Structure:
+```bash
+- ROOT_d/
+	- labeling/
+		- labeling.sh
+		- scripts/
+			- gen_QE_inputs.sh
+			- ml_data.sh
+			- qe_Gen-Batch-Scripts-better-CPU.py
+			- QE_input_gen_from_gro_ecut-100.py
+```
 # Full Script: labeling.sh
 ```bash
 #!/bin/bash
