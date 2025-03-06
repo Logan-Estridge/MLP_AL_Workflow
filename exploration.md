@@ -13,7 +13,7 @@
 			- get_configurations.py
 			- input.lmp
 			- lammps.sub
-			- save.vmd # saved visualization state for vmd
+			- save.vmd # saved visualization state for vmd (optional)
 ```
 # Full Script: exploration.sh
 ```bash
