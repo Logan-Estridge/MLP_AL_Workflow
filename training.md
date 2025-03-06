@@ -1,3 +1,15 @@
+# Directory Structure:
+```bash
+- ROOT_d/
+	- training/
+		- training.sh
+		- training-restart.sh
+	- utils/
+		- create_training_json.sh
+		- submit-training-GPU.sh
+		- submit-training-restart-GPU.sh
+		- training.json.template
+```
 # Full Script: training.sh
 ```bash
 #!/bin/bash                                                                                                                                                                                                                                                                                                                 
@@ -375,5 +387,45 @@ The function `train_from_scratch` uses apptainer to execute the docker image of 
 
 Finally, once the ensemble of models are trained, the `train_freeze_and_compress_model` function handles compressing the outputs into `graph-compress-?-.pb` form. 
 
+The script to restart the training from a checkpoint file is very similar:
+### submit-training-restart-GPU.sh
+```bash
+#!/bin/bash -l                                         
+#SBATCH -e _slurm-%j.out                                         
+#SBATCH -o _slurm-%j.out                                         
+#SBATCH --cpus-per-task=8       ## Number of cpus used per task                                         
+#SBATCH --gpus-per-task=1                                         
+#SBATCH --nodes=1                   ## Number of nodes to be used                                         
+#SBATCH --ntasks=1                                         
+#SBATCH -p valsson_ml.gpu                ## Partition/jobqueue to be used                                         
+#SBATCH --gres-flags=enforce-binding                                                                                                                                                                                     
+#SBATCH -t 24:00:00                                         
+
+module purge                                         
+module load apptainer                                         
+export OMP_NUM_THREADS=8                                         
+export TF_INTRA_OP_PARALLELISM_THREADS=4                                         
+export TF_INTER_OP_PARALLELISM_THREADS=2                                         
+export JOB_d="${polymorph}/iter_${iteration}/${model_id}"                                         
+
+train_restart() {                                         
+  apptainer exec --nv --bind "${TRAIN_d}":/job \                                         
+    /storage/nas_scr/shared/groups/valsson/Logan-Runs/containers/deepmd-kit_v2.1.1.sif \                                         
+    bash -c "cd /job/${JOB_d}; dp train  --restart model.ckpt ${JSON}"                                         
+}                                         
+
+train_freeze_and_compress_model() {                                         
+  apptainer exec --nv --bind "${TRAIN_d}":/job \                                         
+    /storage/nas_scr/shared/groups/valsson/Logan-Runs/containers/deepmd-kit_v2.1.1.sif \                                         
+    bash -c "cd /job/${JOB_d}; dp freeze -o graph-${model_id}.pb && dp compress -i graph-${model_id}.pb -o graph-compress-${model_id}.pb"                                         
+}                                         
+
+restart_one_shot() {                                         
+  train_restart                                         
+  train_freeze_and_compress_model                                         
+}                                         
+
+restart_one_shot     
+```
 ### Back to training.sh (again)
 `wait_jobs_done` was described in detail in labeling.md, and `wrap_up` requires no further explanation. Thus, an ensemble of models can be trained for any arbitrary iteration of active learning. 
