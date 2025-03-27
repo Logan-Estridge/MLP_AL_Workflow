@@ -538,7 +538,7 @@ This script is quite complicated, but its purpose is very simple, and that is to
 With this information, the script sets the values of certain key variables using some (definitely imperfect, but good enough) math in the function `check_cores()`. Many of these key variables are used in the function `create_batch_script()`, which defines the content of the slurm batch scripts, and ensures only a maximum of a certain number of jobs are running at any given time (so as to not overload the computational nodes). Finally, the function `submit_batch_scripts()` actually creates the batch scripts so that they can be submitted by `labeling.sh`. 
 
 ### Back to labeling.sh (again)
-The next function will appear in a similar form in both [[exploration]].sh and [[training]].sh. In this case, it is responsible for holding the script from finishing its execution until all of the labeling is completed. It does so by taking advantage of the `sacct` function in the shell, which can monitor job status for a given slurm id:
+The next function will appear in a similar form in both [exploration.sh](exploration.md) and [training.sh](training.md). In this case, it is responsible for holding the script from finishing its execution until all of the labeling is completed. It does so by taking advantage of the `sacct` function in the shell, which can monitor job status for a given slurm id:
 ```bash
 wait_jobs_done() {    
   while : ; do    
