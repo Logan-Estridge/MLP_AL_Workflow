@@ -181,7 +181,7 @@ post_processing() {
 - `create_and_submit_work` creates the directories and submits a series of 10 MD simulations with different random seeds
 - `wait_jobs_done` was explained in detail in [labeling.md](labeling.md)
 - `wrap_up` just `echo`s some info to the screen
-- `generate_plots` makes plots like the one in the [README](README.md)
+- `generate_plots` makes plots like the one in the [Quick Start](Quick_Start.md)
 - Finally, `extract_configurations` extracts all of the structures between `lower_limit` and `upper_limit` as defined in `active_learning.sh` and sends them to the next iteration for labeling
 
 ## Details
