@@ -179,9 +179,9 @@ post_processing() {
 - In `set_plan` some important variables are defined
 - `set_dpmd_variables` defines the variables to be inserted into the LAMMPS input script
 - `create_and_submit_work` creates the directories and submits a series of 10 MD simulations with different random seeds
-- `wait_jobs_done` was explained in detail in [[4 - Journal/PABA MLP/Documentation/labeling|labeling]]
+- `wait_jobs_done` was explained in detail in [labeling.md](labeling.md)
 - `wrap_up` just `echo`s some info to the screen
-- `generate_plots` makes plots like the one in [[MLP Automatic Active Learning Workflow]]
+- `generate_plots` makes plots like the one in the [README](README.md)
 - Finally, `extract_configurations` extracts all of the structures between `lower_limit` and `upper_limit` as defined in `active_learning.sh` and sends them to the next iteration for labeling
 
 ## Details
@@ -679,7 +679,7 @@ get_all_labeling_inputs() {
 
 get_all_labeling_inputs
 ```
-To summarize this script, it uses `awk` to extract all of the timesteps corresponding to structures with a maximum deviation in the force between `lower_limit` and `upper_limit` (as defined in `active_learning.sh`), printing these timesteps to a file called `timesteps`. Then, the python script `get_configurations.py` is run to extract the frames from the LAMMPS trajectory, and the python script `convert-to-QE-input.py` is run to convert these frames to Quantum Espresso input format, as in [[4 - Journal/PABA MLP/Documentation/labeling|labeling]]. After this, the QE inputs are shuffled, and a certain number of them are hardlinked over to the next iteration's `labeling/` directory. At this moment, I am `ln`-ing up to a maximum of 300 structures total, and a minimum of 30 total, with 90 % of the total going towards the next iteration's training set, and the other 10 % going towards the next iteration's validation set.
+To summarize this script, it uses `awk` to extract all of the timesteps corresponding to structures with a maximum deviation in the force between `lower_limit` and `upper_limit` (as defined in `active_learning.sh`), printing these timesteps to a file called `timesteps`. Then, the python script `get_configurations.py` is run to extract the frames from the LAMMPS trajectory, and the python script `convert-to-QE-input.py` is run to convert these frames to Quantum Espresso input format, as in [labeling.sh](labeling.md). After this, the QE inputs are shuffled, and a certain number of them are hardlinked over to the next iteration's `labeling/` directory. At this moment, I am `ln`-ing up to a maximum of 300 structures total, and a minimum of 30 total, with 90 % of the total going towards the next iteration's training set, and the other 10 % going towards the next iteration's validation set.
 ### get_configurations.py
 ```python
 import os                                         
