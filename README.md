@@ -32,8 +32,8 @@ Use GROMACS to perform a classical MD simulation of the polymorph/system of inte
 
 ## Reading Order
 1. README
-2. Quick Start
-3. Details
-4. labeling
-5. training
-6. exploration
+2. [Quick Start](Quick_Start.md)
+3. [Details](Details.md)
+4. [labeling](labeling.md)
+5. [training](training.md)
+6. [exploration](exploration.md)
