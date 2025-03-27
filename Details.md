@@ -55,7 +55,8 @@ Based on the above values of `start` and `final_AL_iteration` it defines a `for`
 - Note 2: `exit 1` means to exit the current script (`active_learning.sh`) with an exit code of `1`. This exit code means that the script has failed for any generic reason, the prior `echo` statement clarifies the reason. 
 
 Once all the labeling for the given iteration is finished, the `for` loop will move into the training directory and execute `training.sh` 
-	Note: if the training for a given iteration did not finish, uncomment `sh training-restart.sh` and comment `sh training.sh`. Comment other parts of `active_learing.sh` as necessary and set both `start` and `final_AL_iteration` to the value of the current iteration, and run the `active_learning.sh` script.
+- Note 3: if the training for a given iteration did not finish, uncomment `sh training-restart.sh` and comment `sh training.sh`. Comment other parts of `active_learing.sh` as necessary and set both `start` and `final_AL_iteration` to the value of the current iteration, and run the `active_learning.sh` script.
+
 Likewise, this script (`training.sh`) will not complete until all the training is done for a given iteration. Finally, the `for` loop moves into the exploration directory and executes `exploration.sh`. As you can guess, this script is designed with exactly the same principles as the last two. Once `exploration.sh` is completed, the structures between the values of `lower_limit` and `upper_limit` defined in `set_plan` are extracted and sent to the next iteration's labeling directory for labeling. Thus the cycle may be repeated as many times as needed. 
 
 For detailed explanations of `labeling.sh`, `training.sh`, and `exploration.sh` see the following:
