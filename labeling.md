@@ -602,7 +602,7 @@ execute_raw_to_set.sh
 mv *.raw ../ml_data/
 mv set* ../ml_data/  
 ```
-This script simply checks if any DFT calculations did not finish, and if there are any that did not, sends them to a different directory to separate them from the rest of the data. Then it runs a python script to convert the QE output data to `*.raw` format, and performs the DeePMD-kit function `execute_raw_to_set`, with the "nline per set" = 100 (see DeePMD-kit docs). Finally, it moves all of this "raw data" to a separate directory called `ml_data/`. 
+This script simply checks if any DFT calculations did not finish, and if there are any that did not, sends them to a different directory to separate them from the rest of the data. Then it runs a python script to convert the QE output data to `*.raw` format, and performs the DeePMD-kit function `execute_raw_to_set`, with the "nline per set" = 100 (see [DeePMD-kit docs](https://docs.deepmodeling.com/projects/deepmd/en/stable/data/data-conv.html). Finally, it moves all of this "raw data" to a separate directory called `ml_data/`. 
 
 ### get_raw.py
 ```python
@@ -655,4 +655,4 @@ def get_raws():
 if __name__ == "__main__":                                         
     get_raws()                                                                                                                                                                                                  
 ```
-This script is not the only way to convert QE output data to `*.raw` format. Also see the DeePMD-kit docs on the `dpdata` tool.
+This script is not the only way to convert QE output data to `*.raw` format. Also see the [DeePMD-kit docs](https://docs.deepmodeling.com/projects/deepmd/en/stable/getting-started/quick_start.html) on the `dpdata` tool.
