@@ -40,58 +40,114 @@ ROOT_d/
 
 Now all the preliminary setup to start the active learning cycle is done. `cd` back into the root directory and inspect the active learning script: `vi active_learning.sh`, it should appear something like the following:
 ```bash
-#!/bin/bash                                         
+#!/bin/bash
 
-set_plan() {                                         
-  start_AL_iteration=0                                       
-  final_AL_iteration=8                              
-  export lower_limit=0.05 # QbC structure selection (Max devi f; ev/Angstrom)                                         
-  export upper_limit=0.25 # QbC structure selection (Max devi f; ev/Angstrom)                                         
-  export polymorph="ALPHA_I"                                      
-  export version="v.11.updated-AL-workflow"
-  AL_log="${polymorph}_AL.log"
+active_learning() {
+  set_plan
+  define_directories
+
+  for iteration in $(seq ${start_AL_iteration} ${final_AL_iteration}); do
+    AL_prep
+
+    labeling
+    training
+    exploration
+
+    AL_wrap_up
+  done
 }
 
-define_directories() {                                                                      
-  export ROOT_d="/storage/nas_scr/shared/groups/valsson/Logan-Runs/PABA/PABA-MLP/${version}"                                         
-  export LABEL_d="${ROOT_d}/labeling"                                         
-  export TRAIN_d="${ROOT_d}/training"                                         
+set_plan() {
+  start_AL_iteration=47
+  final_AL_iteration=50
+  export lower_limit=0.05 # QbC structure selection (Max devi f; ev/Angstrom)
+  export upper_limit=0.25 # QbC structure selection (Max devi f; ev/Angstrom)
+  export polymorph="ALPHA_I"
+  export version="v.11.updated-AL-workflow"
+}
+
+define_directories() {
+  export ROOT_d="/storage/nas_scr/shared/groups/valsson/Logan-Runs/PABA/PABA-MLP/${version}"
+  export LABEL_d="${ROOT_d}/labeling"
+  export TRAIN_d="${ROOT_d}/training"
   export EXPLORE_d="${ROOT_d}/exploration"
-  cd ${ROOT_d} && touch ${AL_log}
-}                                         
+  AL_log="${ROOT_d}/${polymorph}_AL.log"
+  touch ${AL_log}
+}
 
-active_learning() {                                                      
-  for iteration in $(seq ${start_AL_iteration} ${final_AL_iteration}); do                                         
-    export iteration                                                                
-    export LABEL_TRAINING_d="${LABEL_d}/${polymorph}/iter_${iteration}/training"    
-    export LABEL_VALIDATION_d="${LABEL_d}/${polymorph}/iter_${iteration}/validation"
+AL_prep() {
+  export iteration
+  export LABEL_TRAINING_d="${LABEL_d}/${polymorph}/iter_${iteration}/training"
+  export LABEL_VALIDATION_d="${LABEL_d}/${polymorph}/iter_${iteration}/validation"
 
-    echo "$(date)" >> ${AL_log}
-    echo "STARTING ITERATION ${iteration}; POLYMORPH ${polymorph}" >> ${AL_log}
+  echo " " >> ${AL_log}
+  echo "=====================================================================" >> ${AL_log}
+  echo " " >> ${AL_log}
+  echo " " >> ${AL_log}
+  echo "$(date)" >> ${AL_log}
+  echo "STARTING ITERATION ${iteration}; POLYMORPH ${polymorph}" >> ${AL_log}
+}
 
-    cd ${LABEL_d} || { echo "labeling directory not found."; exit 1; }
-    sh labeling.sh                                                                                             
+labeling() {
+  stage="labeling"
 
-    cd ${TRAIN_d} || { echo "training directory not found."; exit 1; }     
-    sh training.sh                                                                                             
-    # sh training-restart.sh                                               
+  start_echo
 
-    cd ${EXPLORE_d} || { echo "exploration directory not found."; exit 1; }
-    sh exploration.sh
+  cd ${LABEL_d} || { echo "${stage} directory not found."; exit 1; }
+  sh labeling.sh || { echo "${stage} script failed."; exit 1; }
 
-    cd ${ROOT_d}
-    echo "$(date)" >> ${AL_log}
-    echo "STARTING ITERATION ${iteration}; POLYMORPH ${polymorph}" >> ${AL_log}
-  done                                                                          
-}                                              
+  done_echo
 
-auto_AL() {         
-  set_plan       
-  define_directories
-  active_learning   
-}      
+  num_training_set=$(ls ${LABEL_d}/${polymorph}/iter_*/training/systems/pw*out | wc -l)
+  num_validation_set=$(ls ${LABEL_d}/${polymorph}/iter_*/validation/systems/pw*out | wc -l)
 
-auto_AL
+  echo "Current number of structures in the training set: ${num_training_set}" >> ${AL_log}
+  echo "Current number of structures in the validation set: ${num_validation_set}" >> ${AL_log}
+  echo " " >> ${AL_log}
+}
+
+training() {
+  stage="training"
+
+  start_echo
+
+  cd ${TRAIN_d} || { echo "${stage} directory not found."; exit 1; }
+  sh training.sh || { echo "${stage} script failed."; exit 1; }
+  # sh training-restart.sh || { echo "${stage} restart script failed."; exit 1; }
+
+  done_echo
+}
+
+exploration() {
+  stage="exploration"
+
+  start_echo
+
+  cd ${EXPLORE_d} || { echo "${stage} directory not found."; exit 1; }
+  sh exploration.sh || { echo "${stage} script failed."; exit 1; }
+
+  done_echo
+}
+
+start_echo() {
+  echo " " >> ${AL_log}
+  echo "$(date): Starting ${stage} for iteration ${iteration}; polymorph ${polymorph}" >> ${AL_log}
+}
+
+done_echo() {
+  echo "$(date): Completed ${stage} for iteration ${iteration}; polymorph ${polymorph}" >> ${AL_log}
+  echo " " >> ${AL_log}
+}
+
+AL_wrap_up() {
+  cd ${ROOT_d}
+  echo " " >> ${AL_log}
+  echo "$(date)" >> ${AL_log}
+  echo "COMPLETED ITERATION ${iteration}; POLYMORPH ${polymorph}" >> ${AL_log}
+  echo " " >> ${AL_log}
+}
+
+active_learning
 ```
 
 ## The zen of the above script
