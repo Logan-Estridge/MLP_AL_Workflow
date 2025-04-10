@@ -150,7 +150,7 @@ AL_wrap_up() {
 active_learning
 ```
 
-## The zen of the above script
+## The main idea of the above script
 The automatic active learning workflow takes advantage of two key properties of bash scripting: 1. it is sequential, i.e. it (generally) goes from top to bottom and executes and finishes any upper task before starting any lower task (thus, e.g. I can ensure all of the labeling finishes in `labeling.sh` before any training starts in `training.sh`); and 2. it allows for the "exportation" of variables. Exporting a variable technically means that the variable will be available to be called in any subshell created by the script the variable was exported in. What this practically means is that if I, for example, export a variable such as "`ROOT_d`" in the above script, then in any script which is run within the above script, such as `labeling.sh`, I can just call this variable in `labeling.sh` (e.g. `cd ${ROOT_d}`) without having to define it anywhere within `labeling.sh`. This strategy of exporting as many variables as possible makes the code of the entire workflow cleaner and more flexible. For example, by exporting the value of the `iteration` of active learning in the above script, I never have to define  it (and therefore change very often) in any of the scripts related to the labeling, training, or exploration processes.
 
 ## Practically
